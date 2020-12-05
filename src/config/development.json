@@ -1,0 +1,19 @@
+{
+	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
+	"LOGGER_NAME": ".log",
+	"DATABASE_URI": "sqlite:///dev-expenses.db",
+	"EXPENSE_CATEGORY": [
+		"MEDICAL",
+		"MARKET",
+		"TRAVEL",
+		"EDUCATION",
+		"EMI",
+		"INTERNET",
+		"BILLS"
+	],
+	"PROJECT_NAME": "",
+	"ENV": "development",
+	"HOST": "127.0.0.1",
+	"PORT": 5000,
+	"DEBUG": true
+}
