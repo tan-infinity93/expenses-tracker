@@ -33,10 +33,12 @@ def create_app(config_name):
 	# Add API Routes:
 
 	from routes.welcome import Welcome
+	from routes.ui import UI
 	from routes.expenses import ExpensesCategory, ManageExpenses
 	from routes.expenses_reports import ExpensesReports
 
 	api.add_resource(Welcome, '/expenses/v1/welcome', methods=['GET'], endpoint='welcome_api')
+	api.add_resource(UI, '/expenses/v1/ui', methods=['GET'], endpoint='ui')
 	api.add_resource(ExpensesCategory, '/expenses/v1/categories', methods=['GET'], endpoint='expenses_category')
 	api.add_resource(ManageExpenses, '/expenses/v1/manage-get', methods=['GET'], endpoint='expenses_get')
 	api.add_resource(ManageExpenses, '/expenses/v1/manage-add', methods=['POST'], endpoint='expenses_add')
