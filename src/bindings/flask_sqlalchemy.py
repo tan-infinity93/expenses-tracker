@@ -85,19 +85,21 @@ class FlaskSqlAlchemy:
 				}
 				for expense in query.all()
 			]
+
+			total = sum([expense['cost'] for expense in expenses])
 			print(expenses)
-			return expenses
+			return expenses, total
 
 		except Exception as e:
 			raise e
 
 	@staticmethod
-	def add_expense(expense_type='', expense_cost=''):
+	def add_expense(expense_type='', expense_cost='', expense_date=''):
 		'''
 		'''
 		try:
 			session = c_app.config.get('SESSION')
-			data = ExpensesTracker(expense_type=expense_type, expense_cost=expense_cost)
+			data = ExpensesTracker(expense_type=expense_type, expense_cost=expense_cost, timestamp=expense_date)
 			session.add(data)
 			session.commit()
 

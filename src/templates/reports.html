@@ -9,6 +9,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<style type="text/css">
 		body {
 			background-color: grey;
@@ -38,26 +40,58 @@
 <div class="container-fluid">
 	<br>
 	<div class="row">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-8">
-			<table class="table table-bordered">
-				<thead>
-					<tr>
-						<th>No</th>
-						<th>Expense Type</th>
-						<th>Expense Cost</th>
-						<th>Timestamp</th>
-					</tr>
-				</thead>
-				<tbody id="tbody"></tbody>
-			</table>
+		<!-- <div class="col-sm-2"></div> -->
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>Expense Type</th>
+								<th>Expense Cost</th>
+								<th>Timestamp</th>
+							</tr>
+						</thead>
+						<tbody id="tbody"></tbody>
+					</table>
+					<br>
+					<div align="center">
+						<div class="btn-group">
+							<button type="button" class="btn btn-primary">Previous</button>
+							<button type="button" class="btn btn-primary">1</button>
+							<button type="button" class="btn btn-primary">2</button>
+							<button type="button" class="btn btn-primary">Next</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
-		<div class="col-sm-2"></div>
+		<div class="col-sm-6">
+			<div class="card">
+				<div class="card-body">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>Expense Type</th>
+								<th>Expense Cost</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody id="tbody1"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 	</div>
 </div>
 
 </body>
 <script type="text/javascript">
+
+toastr.success('Loading Data...!')
+
 getReports = () => {
 	const url = 'http://localhost:5000/expenses/v1/manage-get';
 
@@ -85,6 +119,42 @@ getReports = () => {
 	})
 }
 
+getSummaryReports = () => {
+	const url = 'http://localhost:5000/expenses/v1/sreports';
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['expenses']);
+
+		let expenses = response['data']['expenses'];
+		let total = response['data']['total'];
+		let expensesHtml = '';
+		
+		for (var i = 0; i < expenses.length; i++) {
+			expensesHtml += '<tr>';
+			expensesHtml += '<td>'+(i+1)+'</td>';
+			expensesHtml += '<td>'+expenses[i]['category']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['cost']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['date']+'</td>';
+			expensesHtml += '</tr>';
+		}
+		expensesHtml += '<tr><td></td><td>Total</td><td id="total"></td><td></td></tr>';
+		document.getElementById('tbody1').innerHTML = expensesHtml;
+		document.getElementById('total').innerHTML = total;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
 getReports();
+
+setTimeout(function() {
+  getSummaryReports();
+}, 1000);
+
+
 </script>
 </html>

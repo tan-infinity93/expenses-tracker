@@ -73,13 +73,14 @@ class ManageExpenses(BaseResource):
 		'''
 		try:
 			post_data = request.get_json()
-			post_data = {
-				'expense_type': 'EMI',
-				'expense_cost': 1586.56
-			}
+			print(post_data)
 			expense_type = post_data.get('expense_type')
 			expense_cost = post_data.get('expense_cost')
-			FlaskSqlAlchemy.add_expense(expense_type, expense_cost)
+			expense_date = datetime.strptime(
+				post_data.get('expense_date', datetime.now().isoformat()), 
+				'%Y-%m-%dT%H:%M:%S'
+			)
+			FlaskSqlAlchemy.add_expense(expense_type, expense_cost, expense_date)
 
 			response = {
 				"meta": self.meta,
