@@ -9,7 +9,8 @@
 		"EDUCATION",
 		"EMI",
 		"INTERNET",
-		"BILLS"
+		"BILLS",
+		"MUTUAL_FUNDS"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "production",

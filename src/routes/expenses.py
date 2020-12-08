@@ -35,7 +35,7 @@ class ExpensesCategory(BaseResource):
 			expenses_category = c_app.config.get("EXPENSE_CATEGORY")
 			response = {
 				"meta": self.meta,
-				"category": expenses_category
+				"categories": expenses_category
 			}
 			return response, self.success_code, self.headers
 
