@@ -9,6 +9,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<style type="text/css">
 		body {
 			background-color: grey;
@@ -48,8 +50,12 @@
 						<div id="et"></div>
 					</div>
 					<div class="form-group">
-						<label for="pwd">Enter Expense Cost:</label>
+						<label for="ec">Enter Expense Cost:</label>
 						<input type="number" step="any" class="form-control" placeholder="" id="ec">
+					</div>
+					<div class="form-group">
+						<label for="ed">Enter Expense Date:</label>
+						<input type="date" class="form-control" placeholder="" id="ed">
 					</div>
 					<button type="submit" class="btn btn-primary" onclick="addNewExpense()">Submit</button>
 				</div>
@@ -90,11 +96,28 @@ getCategories();
 addNewExpense = () => {
 	let expenseCategory = document.getElementById('sc').value;
 	let expenseCost = parseFloat(document.getElementById('ec').value);
-	let newExpense = JSON.stringify({
+	let expenseDate = document.getElementById('ed').value + 'T00:00:00';
+
+	let newExpense = {
 		'expense_type': expenseCategory,
-		'expense_cost': expenseCost
+		'expense_cost': expenseCost,
+		'expense_date': expenseDate
+	}
+	// alert(JSON.stringify(newExpense));
+
+	const url = 'http://localhost:5000/expenses/v1/manage-add';
+	const headers = {'Content-Type': 'application/json'}
+
+	axios.post(url, newExpense, headers)
+	.then(function (response) {
+		// handle success
+		toastr.success('Expense added...!')
+		console.log(response);
 	})
-	alert(newExpense);
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
 }
 
 </script>

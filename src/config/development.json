@@ -9,8 +9,10 @@
 		"EDUCATION",
 		"EMI",
 		"INTERNET",
-		"BILLS",
-		"MUTUAL_FUNDS"
+		"ELECTRICITY",
+		"MUTUAL_FUNDS",
+		"GROCERY",
+		"ONLINE_FOOD/APPS"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "development",

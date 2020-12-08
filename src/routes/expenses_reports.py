@@ -32,14 +32,16 @@ class ExpensesReports(BaseResource):
 		'''
 		'''
 		try:
-			expenses = FlaskSqlAlchemy.group_expense_by_date()
+			expenses, total = FlaskSqlAlchemy.group_expense_by_date()
 			response = {
 				"meta": self.meta,
-				"expenses": expenses
+				"expenses": expenses,
+				"total": total
 			}
 			return response, self.success_code, self.headers
 
 		except Exception as e:
+			# print(e)
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request"
