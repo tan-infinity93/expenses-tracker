@@ -43,16 +43,21 @@ class FlaskSqlAlchemy:
 			raise e
 
 	@staticmethod
-	def get_all_expenses(start_date=None, end_date=None):
+	def get_all_expenses(start_date, end_date):
 		'''
 		'''
 		try:
 			session = c_app.config.get('SESSION')
 			query = session.query(ExpensesTracker)
+			print(start_date)
+			print(end_date)
 
 			if start_date and end_date:
-				query = query.filter_by(
-				timestamp=timestamp)
+				query = query.filter(
+					ExpensesTracker.timestamp.between(start_date, end_date)
+				)
+			query = query.order_by(func.date(ExpensesTracker.timestamp))
+
 			expenses = [
 				expense.sqlalchemy_encoder() for expense in query.all()
 			]
@@ -81,8 +86,9 @@ class FlaskSqlAlchemy:
 			)
 
 			if start_date and end_date:
-				query = query.filter_by(
-				timestamp=timestamp)
+				query = query.filter(
+					ExpensesTracker.timestamp.between(start_date, end_date)
+				)
 			expenses = [
 				{
 					'cost': expense[0],

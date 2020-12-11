@@ -13,13 +13,13 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<style type="text/css">
 		body {
-			background-color: grey;
+			background-color: #ffffff;
 		}
 	</style>
 </head>
 <body>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
 	<!-- Brand/logo -->
 	<a class="navbar-brand" href="#">Flask Expenses</a>
 	
@@ -39,54 +39,42 @@
 
 <div class="container-fluid">
 	<br>
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="card">
-				<div class="card-body">
-					<div class="form-group form-inline">
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group form-inline justify-content-center">
 						<label for="std">Enter Start Date:&nbsp;</label>
 						<input type="date" class="form-control" placeholder="" id="std">
 						&nbsp;&nbsp;&nbsp;
 						<label for="end">Enter End Date:&nbsp;</label>
 						<input type="date" class="form-control" placeholder="" id="end">
 						&nbsp;&nbsp;&nbsp;
-						<button type="button" class="btn btn-primary" onclick="getData()">Submit</button>
+						<button type="button" class="btn btn-primary" onclick="getReports()">Submit</button>
 					</div>
+					<br>
+					<ul class="list-group" align="center">
+						<li class="list-group-item">Your Transaction History:</li>
+					</ul>
 				</div>
 			</div>
-		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-sm-6">
-			<div class="card">
-				<div class="card-body">
+			<br>
+			<div class="row">
+				<div class="col-sm-6">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
 								<th>No</th>
 								<th>Expense Type</th>
 								<th>Expense Cost</th>
-								<th>Timestamp</th>
+								<th>Date</th>
 							</tr>
 						</thead>
 						<tbody id="tbody"></tbody>
 					</table>
-					<br>
-					<div align="center">
-						<div class="btn-group">
-							<button type="button" class="btn btn-primary">Previous</button>
-							<button type="button" class="btn btn-primary">1</button>
-							<button type="button" class="btn btn-primary">2</button>
-							<button type="button" class="btn btn-primary">Next</button>
-						</div>
-					</div>
 				</div>
-			</div>
-		</div>
-		<div class="col-sm-6">
-			<div class="card">
-				<div class="card-body">
+				<br>
+				<div class="col-sm-6">
 					<table class="table table-bordered">
 						<thead>
 							<tr>
@@ -108,8 +96,34 @@
 
 toastr.success('Loading Data...!')
 
+defaultDates = () => {
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	let yyyy = today.getFullYear();
+
+	let oldDate = (today.getDate() - 3);
+
+	let endDate1 = yyyy + '-' + mm + '-' + dd;
+
+	if(oldDate < 10){
+		oldDate = '0' + (oldDate).toString();
+	}
+	else{
+		oldDate = (oldDate).toString();
+	}
+	let startDate1 = yyyy + '-' + mm + '-' + oldDate;
+	let startDate = document.getElementById('std').value = startDate1;
+	let endDate = document.getElementById('end').value = endDate1;
+}
+
+defaultDates();
+
 getReports = () => {
-	const url = 'http://localhost:5000/expenses/v1/manage-get';
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = 'http://localhost:5000/expenses/v1/manage-get';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
 
 	axios.get(url)
 	.then(function (response) {
@@ -133,10 +147,17 @@ getReports = () => {
 		// handle error
 		console.log(error);
 	})
+
+	setTimeout(function() {
+	  getSummaryReports();
+	}, 1000);
 }
 
 getSummaryReports = () => {
-	const url = 'http://localhost:5000/expenses/v1/sreports';
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = 'http://localhost:5000/expenses/v1/sreports';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
 
 	axios.get(url)
 	.then(function (response) {
@@ -165,20 +186,6 @@ getSummaryReports = () => {
 }
 
 // getReports();
-
-setTimeout(function() {
-  // getSummaryReports();
-}, 1000);
-
-getData = () => {
-
-	let startDate = document.getElementById('std').value;
-	let endDate = document.getElementById('end').value;
-
-	alert(startDate);
-	alert(endDate);
-}
-
 
 </script>
 </html>

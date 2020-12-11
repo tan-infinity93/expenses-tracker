@@ -32,7 +32,10 @@ class ExpensesReports(BaseResource):
 		'''
 		'''
 		try:
-			expenses, total = FlaskSqlAlchemy.group_expense_by_date()
+			args_data = request.args.to_dict()
+			start_date = args_data.get('startdate')
+			end_date = args_data.get('enddate')
+			expenses, total = FlaskSqlAlchemy.group_expense_by_date(start_date, end_date)
 			response = {
 				"meta": self.meta,
 				"expenses": expenses,
