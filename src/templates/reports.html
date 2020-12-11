@@ -40,7 +40,24 @@
 <div class="container-fluid">
 	<br>
 	<div class="row">
-		<!-- <div class="col-sm-2"></div> -->
+		<div class="col-sm-12">
+			<div class="card">
+				<div class="card-body">
+					<div class="form-group form-inline">
+						<label for="std">Enter Start Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="std">
+						&nbsp;&nbsp;&nbsp;
+						<label for="end">Enter End Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="end">
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary" onclick="getData()">Submit</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="row">
 		<div class="col-sm-6">
 			<div class="card">
 				<div class="card-body">
@@ -74,7 +91,6 @@
 						<thead>
 							<tr>
 								<th>No</th>
-								<th>Expense Type</th>
 								<th>Expense Cost</th>
 								<th>Date</th>
 							</tr>
@@ -134,12 +150,11 @@ getSummaryReports = () => {
 		for (var i = 0; i < expenses.length; i++) {
 			expensesHtml += '<tr>';
 			expensesHtml += '<td>'+(i+1)+'</td>';
-			expensesHtml += '<td>'+expenses[i]['category']+'</td>';
 			expensesHtml += '<td>'+expenses[i]['cost']+'</td>';
 			expensesHtml += '<td>'+expenses[i]['date']+'</td>';
 			expensesHtml += '</tr>';
 		}
-		expensesHtml += '<tr><td></td><td>Total</td><td id="total"></td><td></td></tr>';
+		expensesHtml += '<tr><td></td><td>Total</td><td id="total"></td></tr>';
 		document.getElementById('tbody1').innerHTML = expensesHtml;
 		document.getElementById('total').innerHTML = total;
 	})
@@ -149,11 +164,20 @@ getSummaryReports = () => {
 	})
 }
 
-getReports();
+// getReports();
 
 setTimeout(function() {
-  getSummaryReports();
+  // getSummaryReports();
 }, 1000);
+
+getData = () => {
+
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+
+	alert(startDate);
+	alert(endDate);
+}
 
 
 </script>
