@@ -53,7 +53,11 @@ class ManageExpenses(BaseResource):
 		'''
 		'''
 		try:
-			expenses = FlaskSqlAlchemy.get_all_expenses()
+			args_data = request.args.to_dict()
+			start_date = args_data.get('startdate')
+			end_date = args_data.get('enddate')
+
+			expenses = FlaskSqlAlchemy.get_all_expenses(start_date, end_date)
 			response = {
 				"meta": self.meta,
 				"expenses": expenses
@@ -61,6 +65,7 @@ class ManageExpenses(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
+			print(e)
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request",

@@ -10,6 +10,7 @@ from sqlalchemy import (
 	Column, Boolean, Integer, Float, String, Date, DateTime, create_engine
 )
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
 
 # Create SQLAlchemy ORM Object:
@@ -35,7 +36,7 @@ class ExpensesTracker(Base):
 			for k,v in self.__dict__.items():
 				if k != '_sa_instance_state':
 					if isinstance(v, datetime):
-						serialized_data[k] = v.isoformat()
+						serialized_data[k] = v.isoformat()[:10]
 					else:
 						serialized_data[k] = v
 			return serialized_data
