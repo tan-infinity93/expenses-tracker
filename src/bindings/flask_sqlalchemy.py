@@ -65,12 +65,18 @@ class FlaskSqlAlchemy:
 	def group_expense_by_date(start_date=None, end_date=None):
 		try:
 			session = c_app.config.get('SESSION')
+			# query = session.query(
+			# 	ExpensesTracker.expense_type, 
+			# 	func.sum(ExpensesTracker.expense_cost).label('expense_cost'),
+			# 	func.date(ExpensesTracker.timestamp)
+			# ).group_by(
+			# 	ExpensesTracker.expense_type,
+			# 	func.date(ExpensesTracker.timestamp)
+			# )
 			query = session.query(
-				ExpensesTracker.expense_type, 
 				func.sum(ExpensesTracker.expense_cost).label('expense_cost'),
 				func.date(ExpensesTracker.timestamp)
 			).group_by(
-				ExpensesTracker.expense_type,
 				func.date(ExpensesTracker.timestamp)
 			)
 
@@ -79,9 +85,8 @@ class FlaskSqlAlchemy:
 				timestamp=timestamp)
 			expenses = [
 				{
-					'category': expense[0],
-					'cost': expense[1],
-					'date': expense[2]
+					'cost': expense[0],
+					'date': expense[1]
 				}
 				for expense in query.all()
 			]
