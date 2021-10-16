@@ -29,7 +29,7 @@ class FlaskSqlAlchemy:
 		'''
 		'''
 		try:
-			db_uri = app.config.get('DATABASE_URI')
+			db_uri = app.config.get('DATABASE_URL')
 			connection_string = f'{db_uri}'
 			engine = create_engine(connection_string)
 			Session = sessionmaker(bind=engine)
