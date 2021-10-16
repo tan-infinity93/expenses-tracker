@@ -3,6 +3,7 @@
 
 # Import Modules:
 
+import traceback
 from datetime import datetime
 from flask import request, current_app as c_app
 from flask_restful import Resource
@@ -40,6 +41,7 @@ class ExpensesCategory(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
+			traceback.print_exc()
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request"
@@ -65,7 +67,7 @@ class ManageExpenses(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
-			print(e)
+			traceback.print_exc()
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request",
@@ -81,11 +83,11 @@ class ManageExpenses(BaseResource):
 			print(post_data)
 			expense_type = post_data.get('expense_type')
 			expense_cost = post_data.get('expense_cost')
-			expense_date = datetime.strptime(
-				post_data.get('expense_date', datetime.now().isoformat()), 
-				'%Y-%m-%dT%H:%M:%S'
-			)
-			FlaskSqlAlchemy.add_expense(expense_type, expense_cost, expense_date)
+			expense_date = post_data.get('expense_date')
+			FlaskSqlAlchemy.add_expense('expenses_tracker', {
+				'expense_type': expense_type, 'expense_cost': expense_cost, 
+				'timestamp': expense_date
+			})
 
 			response = {
 				"meta": self.meta,
@@ -94,7 +96,7 @@ class ManageExpenses(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
-			print(e)
+			traceback.print_exc()
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request"
@@ -116,7 +118,7 @@ class ManageExpenses(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
-			print(e)
+			traceback.print_exc()
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request"
