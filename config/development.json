@@ -1,0 +1,23 @@
+{
+	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
+	"LOGGER_NAME": ".log",
+	"DATABASE_URL": "postgres://tan_admin:m@broSonu2002@localhost:5432/expenses",
+	"EXPENSE_CATEGORY": [
+		"MEDICAL",
+		"MARKET",
+		"TRAVEL",
+		"EDUCATION",
+		"EMI",
+		"INTERNET",
+		"ELECTRICITY",
+		"MUTUAL_FUNDS",
+		"GROCERY",
+		"ONLINE_FOOD/APPS",
+		"CLOTHES"
+	],
+	"PROJECT_NAME": "",
+	"ENV": "development",
+	"HOST": "127.0.0.1",
+	"PORT": 5005,
+	"DEBUG": true
+}

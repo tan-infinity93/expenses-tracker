@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Reports</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<style type="text/css">
+		body {
+			background-color: #ffffff;
+		}
+	</style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+	<!-- Brand/logo -->
+	<a class="navbar-brand" href="#">Flask Expenses</a>
+	
+	<!-- Links -->
+	<ul class="navbar-nav">
+		<li class="nav-item">
+			<a class="nav-link" href="/expenses/v1/home">Home</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">Reports</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="#">About</a>
+		</li>
+	</ul>
+</nav>
+
+<div class="container-fluid">
+	<br>
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group form-inline justify-content-center">
+						<label for="std">Enter Start Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="std">
+						&nbsp;&nbsp;&nbsp;
+						<label for="end">Enter End Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="end">
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary" onclick="getReports()">Submit</button>
+					</div>
+					<br>
+					<ul class="list-group" align="center">
+						<li class="list-group-item">Your Transaction History:</li>
+					</ul>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-6">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>Expense Type</th>
+								<th>Expense Cost</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody id="tbody"></tbody>
+					</table>
+				</div>
+				<br>
+				<div class="col-sm-6">
+					<table class="table table-bordered">
+						<thead>
+							<tr>
+								<th>No</th>
+								<th>Expense Cost</th>
+								<th>Date</th>
+							</tr>
+						</thead>
+						<tbody id="tbody1"></tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</body>
+<script type="text/javascript">
+
+toastr.success('Loading Data...!')
+
+defaultDates = () => {
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	let yyyy = today.getFullYear();
+
+	let oldDate = (today.getDate() - 3);
+
+	let endDate1 = yyyy + '-' + mm + '-' + dd;
+
+	if(oldDate < 10){
+		oldDate = '0' + (oldDate).toString();
+	}
+	else{
+		oldDate = (oldDate).toString();
+	}
+	let startDate1 = yyyy + '-' + mm + '-' + oldDate;
+	let startDate = document.getElementById('std').value = startDate1;
+	let endDate = document.getElementById('end').value = endDate1;
+}
+
+defaultDates();
+
+getReports = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = '/expenses/v1/manage-get';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['expenses']);
+
+		let expenses = response['data']['expenses'];
+		let expensesHtml = '';
+		
+		for (var i = 0; i < expenses.length; i++) {
+			expensesHtml += '<tr>';
+			expensesHtml += '<td>'+(i+1)+'</td>';
+			expensesHtml += '<td>'+expenses[i]['expense_type']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['expense_cost']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['timestamp']+'</td>';
+			expensesHtml += '</tr>';
+		}
+		document.getElementById('tbody').innerHTML = expensesHtml;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+
+	setTimeout(function() {
+	  getSummaryReports();
+	}, 1000);
+}
+
+getSummaryReports = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = '/expenses/v1/sreports';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['expenses']);
+
+		let expenses = response['data']['expenses'];
+		let total = response['data']['total'];
+		let expensesHtml = '';
+		
+		for (var i = 0; i < expenses.length; i++) {
+			expensesHtml += '<tr>';
+			expensesHtml += '<td>'+(i+1)+'</td>';
+			expensesHtml += '<td>'+expenses[i]['cost']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['date']+'</td>';
+			expensesHtml += '</tr>';
+		}
+		expensesHtml += '<tr><td></td><td>Total</td><td id="total"></td></tr>';
+		document.getElementById('tbody1').innerHTML = expensesHtml;
+		document.getElementById('total').innerHTML = total;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
+// getReports();
+
+</script>
+</html>
