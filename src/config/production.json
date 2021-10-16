@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URI": "sqlite:///prod-expenses.db",
+	"DATABASE_URL": "",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",

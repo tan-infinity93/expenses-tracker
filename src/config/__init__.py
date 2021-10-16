@@ -36,5 +36,6 @@ def get_config(config_names):
 
         with open(config_file_path) as file:
             config_data.update(json.loads(file.read()))
+            config_data.update(dict(os.environ))
 
     return config_data
