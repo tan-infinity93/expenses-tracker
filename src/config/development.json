@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URI": "sqlite:///dev-expenses.db",
+	"DATABASE_URI": "postgres://tan_admin:m@broSonu2002@localhost:5432/expenses",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",
@@ -12,11 +12,12 @@
 		"ELECTRICITY",
 		"MUTUAL_FUNDS",
 		"GROCERY",
-		"ONLINE_FOOD/APPS"
+		"ONLINE_FOOD/APPS",
+		"CLOTHES"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "development",
 	"HOST": "127.0.0.1",
-	"PORT": 5000,
+	"PORT": 5005,
 	"DEBUG": true
 }

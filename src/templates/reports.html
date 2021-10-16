@@ -122,7 +122,7 @@ defaultDates();
 getReports = () => {
 	let startDate = document.getElementById('std').value;
 	let endDate = document.getElementById('end').value;
-	let url = 'http://localhost:5000/expenses/v1/manage-get';
+	let url = '/expenses/v1/manage-get';
 	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
 
 	axios.get(url)
@@ -156,7 +156,7 @@ getReports = () => {
 getSummaryReports = () => {
 	let startDate = document.getElementById('std').value;
 	let endDate = document.getElementById('end').value;
-	let url = 'http://localhost:5000/expenses/v1/sreports';
+	let url = '/expenses/v1/sreports';
 	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
 
 	axios.get(url)

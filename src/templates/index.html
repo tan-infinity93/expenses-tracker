@@ -67,8 +67,8 @@
 </body>
 <script type="text/javascript">
 
-getCategories = () => {
-	const url = 'http://localhost:5000/expenses/v1/categories';
+const getCategories = () => {
+	const url = '/expenses/v1/categories';
 
 	axios.get(url)
 	.then(function (response) {
@@ -93,7 +93,7 @@ getCategories = () => {
 
 getCategories();
 
-addNewExpense = () => {
+const addNewExpense = () => {
 	let expenseCategory = document.getElementById('sc').value;
 	let expenseCost = parseFloat(document.getElementById('ec').value);
 	let expenseDate = document.getElementById('ed').value + 'T00:00:00';
@@ -105,7 +105,7 @@ addNewExpense = () => {
 	}
 	// alert(JSON.stringify(newExpense));
 
-	const url = 'http://localhost:5000/expenses/v1/manage-add';
+	const url = '/expenses/v1/manage-add';
 	const headers = {'Content-Type': 'application/json'}
 
 	axios.post(url, newExpense, headers)

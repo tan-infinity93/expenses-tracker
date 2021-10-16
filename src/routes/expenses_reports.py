@@ -3,6 +3,7 @@
 
 # Import Modules:
 
+import traceback
 from datetime import datetime
 from flask import request, current_app as c_app
 from flask_restful import Resource
@@ -44,7 +45,33 @@ class ExpensesReports(BaseResource):
 			return response, self.success_code, self.headers
 
 		except Exception as e:
-			# print(e)
+			traceback.print_exc()
+			response = {
+				"meta": self.meta,
+				"message": "unable to process request"
+			}
+			return response, self.exception_code, self.headers
+
+class ExpensesRatio(BaseResource):
+	'''
+	'''
+	def get(self):
+		'''
+		'''
+		try:
+			args_data = request.args.to_dict()
+			start_date = args_data.get('startdate')
+			end_date = args_data.get('enddate')
+			monthly_salary, total = FlaskSqlAlchemy.get_expenses_ratio(start_date, end_date)
+			response = {
+				"meta": self.meta,
+				"ratio": round(((total * 100) / monthly_salary), 2),
+				"total": total
+			}
+			return response, self.success_code, self.headers
+
+		except Exception as e:
+			traceback.print_exc()
 			response = {
 				"meta": self.meta,
 				"message": "unable to process request"

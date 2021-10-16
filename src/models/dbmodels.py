@@ -35,7 +35,31 @@ class ExpensesTracker(Base):
 			serialized_data = {}
 			for k,v in self.__dict__.items():
 				if k != '_sa_instance_state':
-					if isinstance(v, datetime):
+					if isinstance(v, date):
+						serialized_data[k] = v.isoformat()[:10]
+					else:
+						serialized_data[k] = v
+			return serialized_data
+
+		except Exception as e:
+			raise e
+
+class MonthlySalary(Base):
+	'''
+	'''
+	__tablename__ = 'monthly_salary'
+	id = Column(Integer, primary_key = True)
+	salary = Column(Float)
+	timestamp = Column(DateTime, default = datetime.now)
+
+	def sqlalchemy_encoder(self):
+		'''
+		'''
+		try:
+			serialized_data = {}
+			for k,v in self.__dict__.items():
+				if k != '_sa_instance_state':
+					if isinstance(v, date):
 						serialized_data[k] = v.isoformat()[:10]
 					else:
 						serialized_data[k] = v

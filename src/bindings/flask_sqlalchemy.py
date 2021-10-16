@@ -10,7 +10,7 @@ from sqlalchemy import create_engine, func
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, load_only
 from models.dbmodels import (
-	Base, ExpensesTracker
+	Base, ExpensesTracker, MonthlySalary
 )
 
 # Class Definition:
@@ -54,7 +54,7 @@ class FlaskSqlAlchemy:
 
 			if start_date and end_date:
 				query = query.filter(
-					ExpensesTracker.timestamp.between(start_date, end_date)
+					func.date(ExpensesTracker.timestamp).between(start_date, end_date)
 				)
 			query = query.order_by(func.date(ExpensesTracker.timestamp))
 
@@ -87,12 +87,14 @@ class FlaskSqlAlchemy:
 
 			if start_date and end_date:
 				query = query.filter(
-					ExpensesTracker.timestamp.between(start_date, end_date)
+					func.date(ExpensesTracker.timestamp).between(start_date, end_date)
 				)
+
+			print(query)
 			expenses = [
 				{
 					'cost': expense[0],
-					'date': expense[1]
+					'date': expense[1].isoformat()
 				}
 				for expense in query.all()
 			]
@@ -105,14 +107,43 @@ class FlaskSqlAlchemy:
 			raise e
 
 	@staticmethod
-	def add_expense(expense_type='', expense_cost='', expense_date=''):
+	def get_expenses_ratio(start_date, end_date):
 		'''
 		'''
 		try:
 			session = c_app.config.get('SESSION')
-			data = ExpensesTracker(expense_type=expense_type, expense_cost=expense_cost, timestamp=expense_date)
-			session.add(data)
+			query = session.query(MonthlySalary)
+			query = session.query(
+				(MonthlySalary.salary).label('salary')
+			)
+			if start_date and end_date:
+				query = query.filter(
+					func.date(MonthlySalary.timestamp).between(start_date, end_date)
+				)
+
+			monthly_salary = query.one()[0]
+			expenses, total = FlaskSqlAlchemy.group_expense_by_date(start_date, end_date)
+			return monthly_salary, total
+
+		except Exception as e:
+			raise e
+
+	@staticmethod
+	def add_expense(model_name, data):
+		'''
+		'''
+		try:
+			model_mapper = {
+				'expenses_tracker': ExpensesTracker,
+				'monthly_salary': MonthlySalary
+			}
+
+			session = c_app.config.get('SESSION')
+			model = model_mapper.get(model_name)
+			print(model(**data))
+			session.add(model(**data))
 			session.commit()
+			# SELECT ms.timestamp FROM monthly_salary ms;
 
 		except Exception as e:
 			raise e
