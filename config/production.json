@@ -1,0 +1,22 @@
+{
+	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
+	"LOGGER_NAME": ".log",
+	"DATABASE_URL": "",
+	"EXPENSE_CATEGORY": [
+		"MEDICAL",
+		"MARKET",
+		"TRAVEL",
+		"EDUCATION",
+		"EMI",
+		"INTERNET",
+		"ELECTRICITY",
+		"MUTUAL_FUNDS",
+		"GROCERY",
+		"ONLINE_FOOD/APPS"
+	],
+	"PROJECT_NAME": "",
+	"ENV": "production",
+	"HOST": "127.0.0.1",
+	"PORT": 5000,
+	"DEBUG": false
+}
