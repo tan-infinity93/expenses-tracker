@@ -13,7 +13,8 @@
 		"MUTUAL_FUNDS",
 		"GROCERY",
 		"ONLINE_FOOD/APPS",
-		"CLOTHES"
+		"CLOTHES",
+		"ONE_TIME"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "development",

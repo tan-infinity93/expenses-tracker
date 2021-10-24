@@ -15,6 +15,21 @@
 		body {
 			background-color: #ffffff;
 		}
+		::-webkit-scrollbar {
+            height: 5px !important;
+            width: 5px !important;
+            border-radius: 2px !important;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1 !important;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888 !important;
+            border-radius: 2px !important;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555 !important;
+        }
 	</style>
 </head>
 <body>
@@ -60,31 +75,41 @@
 			</div>
 			<br>
 			<div class="row">
+				<div class="col-sm-12">
+					<div id="expense-ratio"></div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
 				<div class="col-sm-6">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th>Expense Type</th>
-								<th>Expense Cost</th>
-								<th>Date</th>
-							</tr>
-						</thead>
-						<tbody id="tbody"></tbody>
-					</table>
+					<div style="overflow-y: scroll; height: 350px;">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Expense Type</th>
+									<th>Expense Cost</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody id="tbody"></tbody>
+						</table>
+					</div>
 				</div>
 				<br>
 				<div class="col-sm-6">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>No</th>
-								<th>Expense Cost</th>
-								<th>Date</th>
-							</tr>
-						</thead>
-						<tbody id="tbody1"></tbody>
-					</table>
+					<div style="overflow-y: scroll; height: 350px;">
+						<table class="table table-bordered">
+							<thead>
+								<tr>
+									<th>No</th>
+									<th>Expense Cost</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody id="tbody1"></tbody>
+						</table>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -96,7 +121,7 @@
 
 toastr.success('Loading Data...!')
 
-defaultDates = () => {
+const defaultDates = () => {
 	let today = new Date();
 	let dd = String(today.getDate()).padStart(2, '0');
 	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
@@ -119,7 +144,7 @@ defaultDates = () => {
 
 defaultDates();
 
-getReports = () => {
+const getReports = () => {
 	let startDate = document.getElementById('std').value;
 	let endDate = document.getElementById('end').value;
 	let url = '/expenses/v1/manage-get';
@@ -149,11 +174,12 @@ getReports = () => {
 	})
 
 	setTimeout(function() {
-	  getSummaryReports();
+		getSummaryReports();
+		getExpenseRatio();
 	}, 1000);
 }
 
-getSummaryReports = () => {
+const getSummaryReports = () => {
 	let startDate = document.getElementById('std').value;
 	let endDate = document.getElementById('end').value;
 	let url = '/expenses/v1/sreports';
@@ -185,7 +211,34 @@ getSummaryReports = () => {
 	})
 }
 
-// getReports();
+const getExpenseRatio = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = '/expenses/v1/ratio';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response);
+		let expenseRatio = response['data']['ratio'];
+
+		document.getElementById('expense-ratio').innerHTML = `
+		<div class="progress bg-warning position-relative" style="height:40px;">
+			<div class="progress-bar" style="width:${expenseRatio}%;height:40px;">
+				<h5 class="justify-content-center d-flex position-absolute w-100">
+					${expenseRatio}
+				</h5>
+			</div>
+		</div>
+		`;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
 
 </script>
 </html>

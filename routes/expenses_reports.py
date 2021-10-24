@@ -63,6 +63,8 @@ class ExpensesRatio(BaseResource):
 			start_date = args_data.get('startdate')
 			end_date = args_data.get('enddate')
 			monthly_salary, total = FlaskSqlAlchemy.get_expenses_ratio(start_date, end_date)
+			print(monthly_salary)
+			print(total)
 			response = {
 				"meta": self.meta,
 				"ratio": round(((total * 100) / monthly_salary), 2),

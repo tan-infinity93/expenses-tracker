@@ -5,8 +5,9 @@
 
 from datetime import datetime
 from ast import literal_eval
+from datetime import datetime as dt
 from flask import current_app as c_app
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, cast, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, load_only
 from models.dbmodels import (
@@ -117,11 +118,13 @@ class FlaskSqlAlchemy:
 				(MonthlySalary.salary).label('salary')
 			)
 			if start_date and end_date:
+				time_data = dt.strptime(start_date, '%Y-%m-%d')
+				month = time_data.month
+				year = time_data.year
 				query = query.filter(
-					func.date(MonthlySalary.timestamp).between(start_date, end_date)
+					func.Date(MonthlySalary.timestamp) == f'{year}-{month}-01%'
 				)
-
-			monthly_salary = query.one()[0]
+			monthly_salary = query.all()[0][0]
 			expenses, total = FlaskSqlAlchemy.group_expense_by_date(start_date, end_date)
 			return monthly_salary, total
 

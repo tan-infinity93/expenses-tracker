@@ -17,15 +17,11 @@ def create_app(config_name):
 
 	# App Binding:
 
-	# from bindings.flask_logger import FlaskLogger
 	from bindings.flask_sqlalchemy import FlaskSqlAlchemy
-	# log_app = FlaskLogger()
-	# log_app.init_app(app)
 
 	flask_sqlalchemy_app = FlaskSqlAlchemy()
 	flask_sqlalchemy_app.init_app(app)
 	api = Api(app, catch_all_404s=True)
-
 	# print(app.config.keys())
 
 	# Add API Routes:
