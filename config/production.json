@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URL": "",
+	"DATABASE_URL": "postgres://vxatyhshvnfmgu:bc9f25876bdeecdaf369e8016c6dcf3fde69a676f8c847dea8cf974e5e5314a2@ec2-34-247-151-118.eu-west-1.compute.amazonaws.com:5432/db41al7unp0mft",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",
@@ -12,7 +12,9 @@
 		"ELECTRICITY",
 		"MUTUAL_FUNDS",
 		"GROCERY",
-		"ONLINE_FOOD/APPS"
+		"ONLINE_FOOD/APPS",
+		"CLOTHES",
+		"ONE_TIME"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "production",
