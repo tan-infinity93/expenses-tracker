@@ -23,13 +23,14 @@ class HomeUI(Resource):
 		self.success_code = 200
 		self.bad_code = 400
 		self.exception_code = 500
+		self.template_name = 'index.html'
 
 	def get(self):
 		'''
 		'''
 		try:
 			return make_response(
-				render_template('index.html'), self.success_code, self.headers
+				render_template(self.template_name), self.success_code, self.headers
 			)
 
 		except Exception as e:
@@ -39,6 +40,22 @@ class HomeUI(Resource):
 				"message": "unable to process request"
 			}
 			return response, self.exception_code, headers
+
+class HomeUI2(HomeUI):
+	'''
+	'''
+	def __init__(self):
+		'''
+		'''
+		self.meta = {
+			"version": 1.0,
+			"timestamp": datetime.now().isoformat()
+		}
+		self.headers = {"Content-Type": "text/html"}
+		self.success_code = 200
+		self.bad_code = 400
+		self.exception_code = 500
+		self.template_name = 'home.html'
 
 class ReportsUI(Resource):
 	'''

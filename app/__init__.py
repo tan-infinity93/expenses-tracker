@@ -27,7 +27,7 @@ def create_app(config_name):
 	# Add API Routes:
 
 	from routes.welcome import Welcome
-	from routes.ui import HomeUI, ReportsUI
+	from routes.ui import HomeUI, HomeUI2, ReportsUI
 	from routes.expenses import ExpensesCategory, ManageExpenses
 	from routes.expenses_reports import ExpensesReports, ExpensesRatio
 	from routes.month_salary import MonthlySalary
@@ -35,6 +35,7 @@ def create_app(config_name):
 	api.add_resource(Welcome, '/expenses/v1/welcome', methods=['GET'], endpoint='welcome_api')
 	api.add_resource(HomeUI, '/', methods=['GET'], endpoint='home_ui')
 	api.add_resource(HomeUI, '/expenses/v1/home', methods=['GET'], endpoint='home_ui2')
+	api.add_resource(HomeUI2, '/expenses/v1/home-new', methods=['GET'], endpoint='home_ui_2')
 	api.add_resource(ReportsUI, '/expenses/v1/reports', methods=['GET'], endpoint='reports_ui')
 	api.add_resource(ExpensesCategory, '/expenses/v1/categories', methods=['GET'], endpoint='expenses_category')
 	api.add_resource(ManageExpenses, '/expenses/v1/manage-get', methods=['GET'], endpoint='expenses_get')

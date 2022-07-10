@@ -149,6 +149,7 @@ class FlaskSqlAlchemy:
 			# SELECT ms.timestamp FROM monthly_salary ms;
 
 		except Exception as e:
+			session.rollback()
 			raise e
 
 	@staticmethod
@@ -161,4 +162,5 @@ class FlaskSqlAlchemy:
 			session.commit()
 		
 		except Exception as e:
+			session.rollback()
 			raise e
