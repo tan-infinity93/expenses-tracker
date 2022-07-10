@@ -30,6 +30,9 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #555 !important;
         }
+        button {
+			border-radius: 25px !important;
+		}
 	</style>
 </head>
 <body>
@@ -48,6 +51,9 @@
 		</li>
 		<li class="nav-item">
 			<a class="nav-link" href="#">About</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" href="/expenses/v1/home-new">Home (Preview)</a>
 		</li>
 	</ul>
 </nav>
@@ -82,7 +88,7 @@
 			<br>
 			<div class="row">
 				<div class="col-sm-6">
-					<div style="overflow-y: scroll; height: 350px;">
+					<div style="overflow-y: scroll; height: 300px;">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -98,7 +104,7 @@
 				</div>
 				<br>
 				<div class="col-sm-6">
-					<div style="overflow-y: scroll; height: 350px;">
+					<div style="overflow-y: scroll; height: 300px;">
 						<table class="table table-bordered">
 							<thead>
 								<tr>
@@ -118,8 +124,6 @@
 
 </body>
 <script type="text/javascript">
-
-toastr.success('Loading Data...!')
 
 const defaultDates = () => {
 	let today = new Date();
@@ -141,8 +145,6 @@ const defaultDates = () => {
 	let startDate = document.getElementById('std').value = startDate1;
 	let endDate = document.getElementById('end').value = endDate1;
 }
-
-defaultDates();
 
 const getReports = () => {
 	let startDate = document.getElementById('std').value;
@@ -239,6 +241,14 @@ const getExpenseRatio = () => {
 	})
 }
 
+const onload = () => {
+	document.getElementById('home').click();
+	toastr.success('Loading Data...!');
+	defaultDates();
+	getReports();
+	setTimeout(getSummaryReports, 3000);
+}
+onload();
 
 </script>
 </html>

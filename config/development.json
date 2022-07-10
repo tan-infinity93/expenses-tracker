@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URL": "postgres://tan_admin:m@broSonu2002@localhost:5432/expenses",
+	"DATABASE_URL": "postgresql://tan_admin:m%40broSonu2002@localhost:5432/expenses",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",
@@ -14,7 +14,14 @@
 		"GROCERY",
 		"ONLINE_FOOD/APPS",
 		"CLOTHES",
-		"ONE_TIME"
+		"ONE_TIME",
+		"MOVIE_TICKETS",
+		"RESTAURANT",
+		"SOVEREIGN_GOLD_BONDS",
+		"OTHER_BONDS",
+		"DISASTER_RELIEF",
+		"GAS_CYLINDER",
+		"TURTLE_FOOD"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "development",
