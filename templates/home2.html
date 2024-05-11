@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Flask Expenses</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<style type="text/css">
+		body {
+			background-color: #ffffff;
+		}
+		::-webkit-scrollbar {
+            height: 5px !important;
+            width: 5px !important;
+            border-radius: 2px !important;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1 !important;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #888 !important;
+            border-radius: 2px !important;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555 !important;
+        }
+        button {
+			border-radius: 25px !important;
+		}
+		.jumbotron {
+			padding-top: 2vh !important;
+			height: 8vh !important;
+		}
+		#navigation {
+			position: absolute;
+			bottom: 0;
+			width: 100vw;
+		}
+		#home {
+			margin-top: 5vh !important;
+		}
+	</style>
+</head>
+<body>
+<div class="jumbotron jumbotron-fluid bg-primary text-white">
+	<div class="container">
+		<h1>Flask Expenses <a href="https://flask-expenses.herokuapp.com/expenses/v1/home">Old View</a></h1>
+	</div>
+</div>
+<div id="navigation">
+	<div class="tab-content">
+		<div class="tab-pane container active" id="home">
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<div class="card">
+						<div class="card-header bg-primary text-white">Add New Expenses</div>
+						<div class="card-body">
+							<div class="form-group">
+								<label for="email">Enter Expense Category:</label>
+								<div id="et"></div>
+							</div>
+							<div class="form-group">
+								<label for="ec">Enter Expense Cost:</label>
+								<input type="number" step="any" class="form-control" placeholder="" id="ec">
+							</div>
+							<div class="form-group">
+								<label for="ed">Enter Expense Date:</label>
+								<input type="date" class="form-control" placeholder="" id="ed">
+							</div>
+							<button type="submit" class="btn btn-primary" onclick="addNewExpense()">Submit</button>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+		</div>
+		<div class="tab-pane container fade" id="menu1">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-group form-inline justify-content-center">
+						<label for="std">Enter Start Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="std">
+						&nbsp;&nbsp;&nbsp;
+						<label for="end">Enter End Date:&nbsp;</label>
+						<input type="date" class="form-control" placeholder="" id="end">
+						&nbsp;&nbsp;&nbsp;
+						<button type="button" class="btn btn-primary" onclick="getReports()">Submit</button>
+					</div>
+					<br>
+					<ul class="list-group" align="center">
+						<li class="list-group-item bg-primary text-white">Your Transaction History:</li>
+					</ul>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="expense-ratio"></div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-sm-6">
+					<div style="overflow-y: scroll; height: 250px;">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="bg-primary text-white">
+									<th>No</th>
+									<th>Expense Type</th>
+									<th>Expense Cost</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody id="tbody"></tbody>
+						</table>
+					</div>
+				</div>
+				<br>
+				<div class="col-sm-6">
+					<div style="overflow-y: scroll; height: 250px;">
+						<table class="table table-bordered">
+							<thead>
+								<tr class="bg-primary text-white">
+									<th>No</th>
+									<th>Expense Cost</th>
+									<th>Date</th>
+								</tr>
+							</thead>
+							<tbody id="tbody1"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+			<br>
+		</div>
+		<div class="tab-pane container fade" id="menu2">
+			<div class="row">
+				<div class="col-sm-4"></div>
+				<div class="col-sm-4">
+					<div class="card">
+						<div class="card-header bg-primary text-white">Flask Expenses</div>
+						<div class="card-body">Version - 1.5</div>
+						<div class="card-footer">Copyright 2020-2022 by overw@tch</div>
+					</div>
+				</div>
+				<div class="col-sm-4"></div>
+			</div>
+		</div>
+	</div>
+	<div id="div-gap"></div>
+	<ul class="nav nav-pills nav-justified" role="tablist">
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" href="#home">Home</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" href="#menu1">Reports</a>
+		</li>
+		<li class="nav-item">
+			<a class="nav-link" data-toggle="pill" href="#menu2">About</a>
+		</li>
+	</ul>
+</div>
+</body>
+<script type="text/javascript">
+const getCategories = () => {
+	const url = 'https://flask-expenses.herokuapp.com/expenses/v1/categories';
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['categories']);
+
+		let categories = response['data']['categories'];
+		let categoriesHtml = '<select name="categories" id="sc" class="custom-select">';
+		
+		for (var i = 0; i < categories.length; i++) {
+			categoriesHtml += '<option value="'+categories[i]+'">'+categories[i]+'</option>';
+		}
+		categoriesHtml += '</select>';
+
+		document.getElementById('et').innerHTML = categoriesHtml;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
+getCategories();
+
+const addNewExpense = () => {
+	let expenseCategory = document.getElementById('sc').value;
+	let expenseCost = parseFloat(document.getElementById('ec').value);
+	let expenseDate = document.getElementById('ed').value + 'T00:00:00';
+
+	let newExpense = {
+		'expense_type': expenseCategory,
+		'expense_cost': expenseCost,
+		'expense_date': expenseDate
+	}
+	// alert(JSON.stringify(newExpense));
+
+	const url = 'https://flask-expenses.herokuapp.com/expenses/v1/manage-add';
+	const headers = {'Content-Type': 'application/json'}
+
+	axios.post(url, newExpense, headers)
+	.then(function (response) {
+		// handle success
+		toastr.success('Expense added...!')
+		console.log(response);
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
+const defaultDates = () => {
+	let today = new Date();
+	let dd = String(today.getDate()).padStart(2, '0');
+	let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+	let yyyy = today.getFullYear();
+
+	let oldDate = (today.getDate() - 3);
+
+	let endDate1 = yyyy + '-' + mm + '-' + dd;
+
+	if(oldDate < 10){
+		oldDate = '0' + (oldDate).toString();
+	}
+	else{
+		oldDate = (oldDate).toString();
+	}
+	let startDate1 = yyyy + '-' + mm + '-' + oldDate;
+	let startDate = document.getElementById('std').value = startDate1;
+	let endDate = document.getElementById('end').value = endDate1;
+}
+
+const getReports = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = 'https://flask-expenses.herokuapp.com/expenses/v1/manage-get';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['expenses']);
+
+		let expenses = response['data']['expenses'];
+		let expensesHtml = '';
+		
+		for (var i = 0; i < expenses.length; i++) {
+			expensesHtml += '<tr>';
+			expensesHtml += '<td>'+(i+1)+'</td>';
+			expensesHtml += '<td>'+expenses[i]['expense_type']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['expense_cost']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['timestamp']+'</td>';
+			expensesHtml += '</tr>';
+		}
+		document.getElementById('tbody').innerHTML = expensesHtml;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+
+	setTimeout(function() {
+		getSummaryReports();
+		// getExpenseRatio();
+	}, 1000);
+}
+
+const getExpenseRatio = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = 'https://flask-expenses.herokuapp.com/expenses/v1/ratio';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response);
+		let expenseRatio = response['data']['ratio'];
+
+		document.getElementById('expense-ratio').innerHTML = `
+		<div class="progress bg-warning position-relative" style="height:40px;">
+			<div class="progress-bar" style="width:${expenseRatio}%;height:40px;">
+				<h5 class="justify-content-center d-flex position-absolute w-100">
+					${expenseRatio}
+				</h5>
+			</div>
+		</div>
+		`;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
+const getSummaryReports = () => {
+	let startDate = document.getElementById('std').value;
+	let endDate = document.getElementById('end').value;
+	let url = 'https://flask-expenses.herokuapp.com/expenses/v1/sreports';
+	url = url + '?' + 'startdate=' + startDate + '&enddate=' + endDate
+
+	axios.get(url)
+	.then(function (response) {
+		// handle success
+		console.log(response['data']['expenses']);
+
+		let expenses = response['data']['expenses'];
+		let total = response['data']['total'];
+		let expensesHtml = '';
+		
+		for (var i = 0; i < expenses.length; i++) {
+			expensesHtml += '<tr>';
+			expensesHtml += '<td>'+(i+1)+'</td>';
+			expensesHtml += '<td>'+expenses[i]['cost']+'</td>';
+			expensesHtml += '<td>'+expenses[i]['date']+'</td>';
+			expensesHtml += '</tr>';
+		}
+		expensesHtml += '<tr><td></td><td>Total</td><td id="total"></td></tr>';
+		document.getElementById('tbody1').innerHTML = expensesHtml;
+		document.getElementById('total').innerHTML = total;
+	})
+	.catch(function (error) {
+		// handle error
+		console.log(error);
+	})
+}
+
+$('.nav-link').on('shown.bs.tab', function (e) {
+	console.log(e.target);
+	let navId = (e.target.href).split("#")[1];
+	console.log(navId);
+	if (navId == 'home') {
+		document.getElementById('div-gap').innerHTML = '<br>'.repeat(2);
+	}
+	if (navId == 'menu1') {
+		document.getElementById('div-gap').innerHTML = '';
+	}
+	if (navId == 'menu2') {
+		document.getElementById('div-gap').innerHTML = '<br>'.repeat(6);
+	}
+})
+
+const onload = () => {
+	document.getElementById('home').click();
+	toastr.success('Loading Data...!');
+	defaultDates();
+	getReports();
+	// setTimeout(getSummaryReports, 3000);
+}
+onload();
+
+</script>
+</html>

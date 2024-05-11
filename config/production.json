@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URL": "postgres://vxatyhshvnfmgu:bc9f25876bdeecdaf369e8016c6dcf3fde69a676f8c847dea8cf974e5e5314a2@ec2-34-247-151-118.eu-west-1.compute.amazonaws.com:5432/db41al7unp0mft",
+	"DATABASE_URL": "postgresql://nyfwvfgw:sPQFa_Mg9dcRYxkVkfg8wmLAFNOwSSyv@babar.db.elephantsql.com/nyfwvfgw",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",
@@ -21,7 +21,10 @@
 		"OTHER_BONDS",
 		"DISASTER_RELIEF",
 		"GAS_CYLINDER",
-		"TURTLE_FOOD"
+		"TURTLE_FOOD",
+		"INTEREST",
+		"BORROWING",
+		"GIFTING"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "production",
