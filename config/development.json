@@ -1,7 +1,7 @@
 {
 	"SECRET_KEY": "xbdbad_()*(bwqdk@1ww",
 	"LOGGER_NAME": ".log",
-	"DATABASE_URL": "postgresql://tan_admin:m%40broSonu2002@localhost:5432/expenses",
+	"DATABASE_URL": "postgresql://tan_admin:m%40broSonu2002@172.17.0.4:5432/expenses",
 	"EXPENSE_CATEGORY": [
 		"MEDICAL",
 		"MARKET",
@@ -21,7 +21,10 @@
 		"OTHER_BONDS",
 		"DISASTER_RELIEF",
 		"GAS_CYLINDER",
-		"TURTLE_FOOD"
+		"TURTLE_FOOD",
+		"INTEREST",
+		"BORROWING",
+		"GIFTING"
 	],
 	"PROJECT_NAME": "",
 	"ENV": "development",

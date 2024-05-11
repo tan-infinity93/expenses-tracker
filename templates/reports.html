@@ -177,7 +177,7 @@ const getReports = () => {
 
 	setTimeout(function() {
 		getSummaryReports();
-		getExpenseRatio();
+		// getExpenseRatio();
 	}, 1000);
 }
 
@@ -242,7 +242,7 @@ const getExpenseRatio = () => {
 }
 
 const onload = () => {
-	document.getElementById('home').click();
+	// document.getElementById('home').click();
 	toastr.success('Loading Data...!');
 	defaultDates();
 	getReports();
